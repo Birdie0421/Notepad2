@@ -24,6 +24,8 @@ public class NotesDB extends SQLiteOpenHelper {
                 + NotePad.Notes.COLUMN_NAME_NOTE_TITLE +" TEXT NOT NULL DEFAULT\"\","
                 + NotePad.Notes.COLUMN_NAME_NOTE_CONTENT + " TEXT NOT NULL DEFAULT\"\","
                 + NotePad.Notes.COLUMN_NAME_NOTE_CATEGORY + " TEXT NOT NULL DEFAULT\"normal\","
+                + NotePad.Notes.COLUMN_NAME_NOTE_PASSWORD + " TEXT NOT NULL DEFAULT\"\","
+                + NotePad.Notes.COLUMN_NAME_NOTE_MEMOTIME + " TEXT NOT NULL DEFAULT\"\","
                 + NotePad.Notes.COLUMN_NAME_NOTE_DATE + " TEXT NOT NULL DEFAULT\"\"" + ")";
         Log.d("SQL", sql);
         db.execSQL(sql);

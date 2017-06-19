@@ -121,5 +121,6 @@ public class Updatepwd_Activity extends AppCompatActivity {
                 }
             }
         });
+        finish();
     }
 }

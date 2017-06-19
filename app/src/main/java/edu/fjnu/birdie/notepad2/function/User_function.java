@@ -46,12 +46,12 @@ public class User_function {
         {
             Imagefile.delete();
         }
-        Imagefile.mkdir();
+        Imagefile.mkdirs();
         try {
             socket=new Socket(server_ip,server_port);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            out.writeUTF("backup_ima");
+            out.writeUTF("restore_ima");
             out.writeUTF(id);
             String r=in.readUTF();
             if(r.equals("begin"))
@@ -73,7 +73,7 @@ public class User_function {
             }
             info=in.readUTF();
         } catch (IOException e) {
-            Log.d("---updatepwd", e.getMessage());
+            //Log.d("---updatepwd", e.getMessage());
             e.printStackTrace();
         }
         finally

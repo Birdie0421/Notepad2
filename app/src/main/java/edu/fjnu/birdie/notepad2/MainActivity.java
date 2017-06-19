@@ -28,6 +28,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -246,26 +247,74 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
         Log.d("Onclick_STATE",noteEdit.ENTER_STATE + "");
         Log.d("position",arg2+"");
         Cursor content = (Cursor) listview.getItemAtPosition(arg2);
-        String content1 = content.getString(content.getColumnIndex("content"));
+        final String content1 = content.getString(content.getColumnIndex("content"));
         Cursor title = (Cursor) listview.getItemAtPosition(arg2);
-        String title1 = title.getString(title.getColumnIndex("title"));
+        final String title1 = title.getString(title.getColumnIndex("title"));
         Cursor id = (Cursor) listview.getItemAtPosition(arg2);
-        String No = id.getString(title.getColumnIndex("_id"));
+        final String No = id.getString(title.getColumnIndex("_id"));
+
+        Cursor category = (Cursor) listview.getItemAtPosition(arg2);
+        String category1 = category.getString(title.getColumnIndex("category"));
         Log.d("Content", content1);
         Log.d("Title", title1);
         Log.d("_Id", No);
+        Log.d("category", category1);
         Log.d("arg2",arg2+"");
         Log.d("arg3",arg3+"");
 
-        Log.d("TEXT", No);
-        Intent myIntent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString("info", content1);
-        bundle.putString("info_title", title1);
-        noteEdit.id = Integer.parseInt(No);
-        myIntent.putExtras(bundle);
-        myIntent.setClass(MainActivity.this, noteEdit.class);
-        startActivityForResult(myIntent, 1);
+        if(!category1.equals(NotePad.CATEGORY_PWD)){
+            Log.d("TEXT", No);
+            Intent myIntent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putString("info", content1);
+            bundle.putString("info_title", title1);
+            noteEdit.id = Integer.parseInt(No);
+            myIntent.putExtras(bundle);
+            myIntent.setClass(MainActivity.this, noteEdit.class);
+            startActivityForResult(myIntent, 1);
+        }else{
+            //
+            final  String pwd = category.getString(title.getColumnIndex("password"));
+            Log.d("pwd",pwd);
+
+            final EditText editTexta = new EditText(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setTitle("输入密码来查看")
+                    .setView(editTexta);
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(!editTexta.getText().toString().equals(pwd)){
+                        Toast.makeText(MainActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Log.d("TEXT", No);
+                        Intent myIntent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("info", content1);
+                        bundle.putString("info_title", title1);
+                        noteEdit.id = Integer.parseInt(No);
+                        myIntent.putExtras(bundle);
+                        myIntent.setClass(MainActivity.this, noteEdit.class);
+                        startActivityForResult(myIntent, 1);
+                    }
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.create();
+            builder.show();
+            //
+
+        }
+
+
+
+
+
     }
 
     @Override
@@ -280,32 +329,89 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
     @Override
     public boolean onItemLongClick(AdapterView<?> arg0,View arg1,int arg2,long arg3){
         final int n = arg2;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setItems(R.array.change_delete_recovery,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int which) {
-                        String action[]= getResources()
-                                .getStringArray(R.array.change_value_delete_recovery);
-                        switch(action[which]){
-                            case "change":{
-                                Cursor content = (Cursor) listview.getItemAtPosition(n);
-                                changeCategory(content);
-                                //Toast.makeText(DeletedActivity.this, "恢复 "+content.getString(content.getColumnIndex("title")), Toast.LENGTH_SHORT).show();
-                                RefreshNotesList();
-                                break;
-                            }
-                            case "delete":{
-                                Cursor content = (Cursor) listview.getItemAtPosition(n);
-                                noteDelete(content);
-                                RefreshNotesList();
-                                //Toast.makeText(MainActivity.this, "删除", Toast.LENGTH_SHORT).show();
-                                break;
+        Cursor category = (Cursor) listview.getItemAtPosition(arg2);
+        String category1 = category.getString(category.getColumnIndex("category"));
+        if(!category1.equals(NotePad.CATEGORY_PWD)){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setItems(R.array.change_delete_recovery,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int which) {
+                            String action[]= getResources()
+                                    .getStringArray(R.array.change_value_delete_recovery);
+                            switch(action[which]){
+                                case "change":{
+                                    Cursor content = (Cursor) listview.getItemAtPosition(n);
+                                    changeCategory(content);
+                                    //Toast.makeText(DeletedActivity.this, "恢复 "+content.getString(content.getColumnIndex("title")), Toast.LENGTH_SHORT).show();
+                                    RefreshNotesList();
+                                    break;
+                                }
+                                case "delete":{
+                                    Cursor content = (Cursor) listview.getItemAtPosition(n);
+                                    noteDelete(content);
+                                    RefreshNotesList();
+                                    //Toast.makeText(MainActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
                             }
                         }
+                    });
+            builder.create();
+            builder.show();
+        }else{
+            final  String pwd = category.getString(category.getColumnIndex("password"));
+            Log.d("pwd",pwd);
+
+            final EditText editTexta = new EditText(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setTitle("输入密码来修改")
+                    .setView(editTexta);
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(!editTexta.getText().toString().equals(pwd)){
+                        Toast.makeText(MainActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                    }else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setItems(R.array.change_delete_recovery,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int which) {
+                                        String action[]= getResources()
+                                                .getStringArray(R.array.change_value_delete_recovery);
+                                        switch(action[which]){
+                                            case "change":{
+                                                Cursor content = (Cursor) listview.getItemAtPosition(n);
+                                                changeCategory(content);
+                                                //Toast.makeText(DeletedActivity.this, "恢复 "+content.getString(content.getColumnIndex("title")), Toast.LENGTH_SHORT).show();
+                                                RefreshNotesList();
+                                                break;
+                                            }
+                                            case "delete":{
+                                                Cursor content = (Cursor) listview.getItemAtPosition(n);
+                                                noteDelete(content);
+                                                RefreshNotesList();
+                                                //Toast.makeText(MainActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                });
+                        builder.create();
+                        builder.show();
+
                     }
-                });
-        builder.create();
-        builder.show();
+                }
+            });
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            builder.create();
+                            builder.show();
+        }
+
 
         return true;
     }
@@ -494,7 +600,12 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
                         break;
                     }
                     case 3: {
+                        int pid = Integer.parseInt(id);;
                         setCategory = "update note set category ='" + NotePad.CATEGORY_PWD + "' where _id=" + id;
+                        Intent intent = new Intent(MainActivity.this,AddNotePwdActivity.class);
+                        intent.putExtra("pid",pid);
+                        Log.d("id",id);
+                        startActivity(intent);
                         Log.d("EXE", setCategory);
                         break;
                     }
