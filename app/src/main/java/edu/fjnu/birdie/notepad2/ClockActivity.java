@@ -57,16 +57,17 @@ public class ClockActivity extends Activity {
         info.notify(NOTIFICATION_ID,notify);
 
 
-//        Bundle myBundle = this.getIntent().getExtras();
-//        Pid = myBundle.getInt("cid");
-//        Log.d("Pid_C",Pid+"");
-//        DB = new NotesDB(this);
-//        dbread = DB.getReadableDatabase();
+        Bundle myBundle = this.getIntent().getExtras();
+        Pid = myBundle.getInt("cid");
+        Log.d("Pid_C",Pid+"");
+        DB = new NotesDB(this);
+        dbread = DB.getReadableDatabase();
 
-//        sql = "select * from note where _id=" + Pid;
-//        Cursor content = dbread.rawQuery(sql,null);
-//        title = content.getString(content.getColumnIndex("title"));
-//        content.close();
+        sql = "select * from note where _id=" + Pid;
+        Cursor content = dbread.rawQuery(sql,null);
+        content.moveToNext();
+        title = content.getString(content.getColumnIndex("title"));
+        content.close();
 
 
 
@@ -75,7 +76,7 @@ public class ClockActivity extends Activity {
         mediaPlayer.start();
 
         //创建一个闹钟提醒的对话框,点击确定关闭铃声与页面
-        new AlertDialog.Builder(ClockActivity.this).setTitle("备忘提示").setMessage( "备忘时间到了")
+        new AlertDialog.Builder(ClockActivity.this).setTitle("备忘提示").setMessage( title+" 时间到了")
         .setPositiveButton("知道了", new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
