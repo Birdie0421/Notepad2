@@ -149,24 +149,27 @@ public class User_function {
             JSONArray array = new JSONArray(in.readUTF());
             String s="delete from "+NotePad.Notes.TABLE_NAME_NOTES;
             sql.execSQL(s);
-            Log.d("Array.Length",array.length()+"");
+//            Log.d("Array.Length",array.length()+"");
             for(int i=0;i<array.length();i++)
             {
                     JSONObject json=array.getJSONObject(i);
                     String id=(String)json.get("id");
                     String title=(String)json.get("title");
-
                     String contain=(String)json.get("contain");
-                    Log.d("Title",contain);
+//                    Log.d("Title",contain);
                     String date=(String)json.get("date");
                     String dirid=(String)json.get("dirid");
+                    String pwd=(String)json.get("pwd");
+                    String alarmtime=(String)json.get("alarmtime");
+
                     ContentValues values=new ContentValues();
                     values.put(NotePad.Notes._ID   ,id);
                     values.put(NotePad.Notes.COLUMN_NAME_NOTE_TITLE  ,title);
                     values.put(NotePad.Notes.COLUMN_NAME_NOTE_CONTENT,contain);
                     values.put(NotePad.Notes.COLUMN_NAME_NOTE_DATE,date);
                     values.put(NotePad.Notes.COLUMN_NAME_NOTE_CATEGORY,dirid);
-
+                    values.put(NotePad.Notes.COLUMN_NAME_NOTE_PASSWORD,pwd);
+                    values.put(NotePad.Notes.COLUMN_NAME_NOTE_MEMOTIME,alarmtime);
                     sql.insert(NotePad.Notes.TABLE_NAME_NOTES,null,values);
             }
             return "success";
