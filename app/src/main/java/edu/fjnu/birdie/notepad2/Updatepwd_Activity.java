@@ -71,8 +71,6 @@ public class Updatepwd_Activity extends AppCompatActivity {
             pwd1.setVisibility(View.VISIBLE);
         }
 
-
-
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

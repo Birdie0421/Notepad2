@@ -72,6 +72,7 @@ public class Login_Activity extends AppCompatActivity {
         register=(Button)findViewById(R.id.register);
         forgetpwd=(Button)findViewById(R.id.forgetpwd);
         updatepwd=(Button)findViewById(R.id.updatepwd);
+        //updatepwd.setVisibility(View.GONE);
         id=(EditText)findViewById(R.id.login_id);
         pwd=(EditText)findViewById(R.id.login_pwd);
         remember_user=(CheckBox)findViewById(R.id.checkBox);
@@ -101,6 +102,7 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Login_Activity.this,Updatepwd_Activity.class);
+                intent.putExtra("state",0);
                 startActivity(intent);
             }
         });

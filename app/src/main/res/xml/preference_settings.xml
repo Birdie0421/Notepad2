@@ -13,7 +13,7 @@
                 android:targetClass="edu.fjnu.birdie.notepad2.Login_Activity"
                 />
         </PreferenceScreen>
-
+<!--
         <PreferenceScreen android:summary="将文档保存在云端"
             android:title="备份"
             android:enabled="true"
@@ -31,7 +31,9 @@
             android:summaryOff="自动备份关闭"
             android:summaryOn="自动备份打开"
             android:title="自动备份" />
+    -->
     </PreferenceCategory>
+    <!--
 
     <PreferenceCategory android:title="外观">
 
@@ -55,7 +57,7 @@
             />
 
     </PreferenceCategory>
-
+-->
     <PreferenceCategory android:title="信息">
 
         <PreferenceScreen
@@ -70,7 +72,7 @@
                 />
         </PreferenceScreen>
 
-
+<!--
         <PreferenceScreen
             android:summary="如果你有新的建议"
             android:title="联系我们" >
@@ -78,9 +80,9 @@
                 android:action="android.intent.action.VIEW"
                 android:data="http://www.baidu.com" />
         </PreferenceScreen>
-
+-->
     </PreferenceCategory>
-
+<!--
     <PreferenceCategory android:title="Preference attributes">
         <CheckBoxPreference
             android:key="parentKey"
@@ -97,5 +99,5 @@
     </PreferenceCategory>
 
 
-
+-->
 </PreferenceScreen>
