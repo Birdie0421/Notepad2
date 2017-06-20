@@ -199,7 +199,9 @@ public class User_function {
                 NotePad.Notes.COLUMN_NAME_NOTE_TITLE ,
                 NotePad.Notes.COLUMN_NAME_NOTE_CONTENT,
                 NotePad.Notes.COLUMN_NAME_NOTE_CATEGORY ,
-                NotePad.Notes.COLUMN_NAME_NOTE_DATE };
+                NotePad.Notes.COLUMN_NAME_NOTE_DATE,
+                NotePad.Notes.COLUMN_NAME_NOTE_PASSWORD,
+                NotePad.Notes.COLUMN_NAME_NOTE_MEMOTIME};
         final Cursor result=sql.query(NotePad.Notes.TABLE_NAME_NOTES,col,null,
                 null,null,null,null);
         JSONArray array = new JSONArray();
@@ -212,6 +214,8 @@ public class User_function {
 					json.put("contain", result.getString(2));
                     json.put("date", result.getString(4));
                     json.put("dirid", result.getString(3));
+                    json.put("pwd", result.getString(5));
+                    json.put("alarmtime", result.getString(6));
 				} catch (JSONException e) {
 					// TODO 自动生成的 catch 块
 					e.printStackTrace();

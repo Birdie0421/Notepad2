@@ -9,6 +9,20 @@ public class Text implements Serializable {
     String contain;
     String date;
     String dirid;
+    String alarmtime;
+    String pwd;
+    public String getAlarmtime() {
+        return alarmtime;
+    }
+    public void setAlarmtime(String alarmtime) {
+        this.alarmtime = alarmtime;
+    }
+    public String getPwd() {
+        return pwd;
+    }
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
     private static final long serialVersionUID = 599271540097165139l;
     
     public String getId() {
