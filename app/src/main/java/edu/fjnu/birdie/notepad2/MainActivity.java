@@ -1,8 +1,11 @@
 package edu.fjnu.birdie.notepad2;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.app.TimePickerDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +18,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.AlarmClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -32,9 +36,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
     private Context mContext;
     private ListView listview;
     private ListView importantList;
+    private AlarmManager alarmManager;
     private SimpleAdapter simpleAdapter;
     private List<Map<String,Object>> datalist;
     private FloatingActionButton  addNote;
@@ -61,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
     //DatabaseManager dbManager;
     public String setCategory;
     ProgressDialog pd;
+    private PendingIntent pi;
+    private String clockTime = null;
 
     Handler restore_handler=new Handler(){
         @Override
@@ -595,7 +606,46 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
                         break;
                     }
                     case 2: {
+                        final int pid = Integer.parseInt(id);;
                         setCategory = "update note set category ='" + NotePad.CATEGORY_MEMO + "' where _id=" + id;
+
+                        // ①获取AlarmManager对象:
+                        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        // 指定要启动的是Activity组件,通过PendingIntent调用getActivity来设置
+                        Intent intent = new Intent(MainActivity.this, ClockActivity.class);
+                        //intent.putExtra("cid",cid);
+                        pi = PendingIntent.getActivity(MainActivity.this, pid, intent, 0);
+
+                        Calendar currentTime = Calendar.getInstance();
+                        // 弹出一个时间设置的对话框,供用户选择时间
+                        new TimePickerDialog(MainActivity.this, 0,
+                                new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view,
+                                                          int hourOfDay, int minute) {
+                                        //设置当前时间
+                                        Calendar c = Calendar.getInstance();
+                                        c.setTimeInMillis(System.currentTimeMillis());
+                                        // 根据用户选择的时间来设置Calendar对象
+                                        c.set(Calendar.HOUR, hourOfDay);
+                                        c.set(Calendar.MINUTE, minute);
+                                        Date date = new Date(c.getTimeInMillis());
+                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                        String s = String.valueOf(c.getTimeInMillis());
+                                        String sql = "update note set memotime ='" + s + "' where _id=" + pid;
+                                        dbread.execSQL(sql);
+                                        clockTime = format.format(date);
+                                        Log.d("clock",clockTime);
+                                        // ②设置AlarmManager在Calendar对应的时间启动Activity
+                                        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                                                c.getTimeInMillis(), pi);
+                                        // 提示闹钟设置完毕:
+                                        Toast.makeText(MainActivity.this, "将于"+clockTime+"提醒您",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime
+                                .get(Calendar.MINUTE), false).show();
+
                         Log.d("EXE", setCategory);
                         break;
                     }
