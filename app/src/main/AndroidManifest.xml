@@ -76,8 +76,6 @@
         <activity android:name=".AddNotePwdActivity" />
         <activity android:name=".MemoActivity" />
         <activity android:name=".ClockActivity" />
-
-
     </application>
 
 </manifest>

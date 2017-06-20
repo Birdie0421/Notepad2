@@ -8,6 +8,7 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -102,6 +103,7 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Login_Activity.this,Updatepwd_Activity.class);
+                Log.d("updatepwd","--------------");
                 intent.putExtra("state",0);
                 startActivity(intent);
             }

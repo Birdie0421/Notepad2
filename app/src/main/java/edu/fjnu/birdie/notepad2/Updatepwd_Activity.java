@@ -3,25 +3,20 @@ package edu.fjnu.birdie.notepad2;
 import android.app.ProgressDialog;
 import android.os.Handler;
 import android.os.Message;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.fjnu.birdie.notepad2.function.User_function;
 
 public class Updatepwd_Activity extends AppCompatActivity {
 
-    public static int state = 0;
-    String oriPassword ;
     Button confirm;
     EditText id,pwd1,pwd2,pwd3;
     ProgressDialog pd;
-
     Handler updatepwd_handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -42,35 +37,11 @@ public class Updatepwd_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updatepwd_);
-
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-
-                .detectDiskReads().detectDiskWrites().detectNetwork()
-
-                .penaltyLog().build());
-
-
         confirm=(Button)findViewById(R.id.updatepwd_confirm);
         id=(EditText)findViewById(R.id.updatepwd_id);
         pwd1=(EditText)findViewById(R.id.updatepwd_pwd1);
         pwd2=(EditText)findViewById(R.id.updatepwd_pwd2);
         pwd3=(EditText)findViewById(R.id.updatepwd_pwd3);
-
-
-        Bundle myBundle = this.getIntent().getExtras();
-        state =  myBundle.getInt("state");
-
-        if(state == 1){
-            TextView pwdTV = (TextView)findViewById(R.id.textView6);
-            pwdTV.setVisibility(View.INVISIBLE);
-            pwd1.setVisibility(View.INVISIBLE);
-            pwd1.setText("888888");
-        }else {
-            TextView pwdTV = (TextView)findViewById(R.id.textView6);
-            pwdTV.setVisibility(View.VISIBLE);
-            pwd1.setVisibility(View.VISIBLE);
-        }
-
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +90,5 @@ public class Updatepwd_Activity extends AppCompatActivity {
                 }
             }
         });
-        finish();
     }
 }
