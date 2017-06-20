@@ -103,8 +103,8 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Login_Activity.this,Updatepwd_Activity.class);
-                Log.d("updatepwd","--------------");
-                intent.putExtra("state",0);
+//                Log.d("updatepwd","--------------");
+//                intent.putExtra("state",0);
                 startActivity(intent);
             }
         });
