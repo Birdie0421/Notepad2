@@ -3,8 +3,12 @@ package edu.fjnu.birdie.notepad2;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -16,6 +20,7 @@ import edu.fjnu.birdie.notepad2.Utils.NotesDB;
 
 public class ClockActivity extends Activity {
 
+    static final int NOTIFICATION_ID = 0x123;
     private MediaPlayer mediaPlayer;
     private NotesDB DB;
     private String sql;
@@ -27,6 +32,30 @@ public class ClockActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clock);
+        NotificationManager info=(NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        Log.d("111","222");
+        Intent intent =new Intent(ClockActivity.this,MainActivity.class);
+        PendingIntent pi= PendingIntent.getActivity(ClockActivity.this,0,intent,0);
+        Notification notify=new Notification.Builder(this)
+                // 设置打开该通知，该通知自动消失
+                .setAutoCancel(true)
+                // 设置显示在状态栏的通知提示信息
+                .setTicker("有新消息")
+                // 设置通知的图标
+                .setSmallIcon(R.drawable.notepad_ic)
+                // 设置通知内容的标题
+                .setContentTitle("一条新通知")
+                // 设置通知内容
+                .setContentText("闹钟")
+//                // 设置使用系统默认的声音、默认LED灯
+                .setDefaults(Notification.DEFAULT_SOUND
+                        |Notification.DEFAULT_LIGHTS)
+                .setWhen(System.currentTimeMillis())
+                .setContentIntent(pi)
+                .build();
+        info.notify(NOTIFICATION_ID,notify);
+
 
 //        Bundle myBundle = this.getIntent().getExtras();
 //        Pid = myBundle.getInt("cid");
