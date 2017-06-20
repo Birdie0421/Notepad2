@@ -613,7 +613,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollListener,
                         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                         // 指定要启动的是Activity组件,通过PendingIntent调用getActivity来设置
                         Intent intent = new Intent(MainActivity.this, ClockActivity.class);
-                        //intent.putExtra("cid",cid);
+                        intent.putExtra("cid",pid);
                         pi = PendingIntent.getActivity(MainActivity.this, pid, intent, 0);
 
                         Calendar currentTime = Calendar.getInstance();
