@@ -13,9 +13,7 @@ import com.kuo.colorpicker.ColorPicker;
 
 import edu.fjnu.birdie.notepad2.R;
 
-/**
- * Created by User on 2015/11/28.
- */
+
 public class ColorPickerDialog extends DialogFragment {
     int currentColor;
 
